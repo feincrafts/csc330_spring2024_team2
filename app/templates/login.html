@@ -11,6 +11,7 @@
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}
         </p>
+        <p>{{ form.submit() }}</p>
     </form>
     <!-- ideally this will lead to the forgot pw screen-->
     <a href="/forgotpw"> Forgot Password </a>
