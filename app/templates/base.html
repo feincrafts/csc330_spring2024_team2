@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html style="color:rgb(45, 43, 66);">
+<!-- Can change background to an image later-->
+<html style="background:rgb(45, 43, 66);">
     <head>
         <title>GameTrack</title>
     </head>
+
     <body>
-        <div style="color:lightsteelblue">
-            <p></p>
+        <div id="mainpanel" class="panel">
+            {% block content %}{% endblock %}
+            
+
         </div>
 
     </body>
+
+    <!-- Should probably fix height dynamically-->
+    <style>
+        .panel{
+            background:lightsteelblue;
+            width: 75%;
+            min-height: 600px;
+            height: auto;
+            margin: auto;
+            margin-top: 5%;
+            padding: 10px;
+            border-radius: 50px;
+            border-color: rgb(244, 247, 250);
+            border-style: solid;
+            border-width: 7px;
+        }
+
+    </style>
+
 </html>
