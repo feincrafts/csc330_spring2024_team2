@@ -2,10 +2,16 @@
 
 <!-- will add styling later -->
 <div class = "panel" style="border-radius: 25px; background-color: rgb(218, 218, 218); min-height: 400px;">
-    <p> User Name: </p>
-    <!-- TODO USER FIELD -->
-    <p> Password: </p>
-    <!-- TODO PW FIELD -->
+    <form>
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+        </p>
+    </form>
     <!-- ideally this will lead to the forgot pw screen-->
     <a href="/forgotpw"> Forgot Password </a>
 </div>
