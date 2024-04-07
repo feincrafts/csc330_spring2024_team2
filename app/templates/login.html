@@ -2,7 +2,8 @@
 
 <!-- will add styling later -->
 <div class = "panel" style="border-radius: 25px; background-color: rgb(218, 218, 218); min-height: 400px;">
-    <form>
+   <!-- TODO: see if the form works -->
+    <form action="" method="post" novalidate>
         <p>
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}
@@ -14,5 +15,5 @@
         <p>{{ form.submit() }}</p>
     </form>
     <!-- ideally this will lead to the forgot pw screen-->
-    <a href="/forgotpw"> Forgot Password </a>
+    <a href="forgotpw.html"> Forgot Password </a>
 </div>

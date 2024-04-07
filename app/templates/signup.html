@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+<!-- TODO: see if the form works -->
+<div>
+    <form action="" method="post" novalidate>
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+        </p>
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}
+        </p>
+        <p>
+            {{ form.passwordRepeat.label }}<br>
+            {{ form.passwordRepeat(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>

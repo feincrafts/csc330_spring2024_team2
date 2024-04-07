@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+<!-- TODO: see if the form works -->
+<!-- not using the old_pw bc the idea is they don't know their old pw? -->
+<div>
+    <form action="" method="post" novalidate>
+        <p>
+            {{ form.new_password.label }}<br>
+            {{ form.new_password(size=32) }}
+        </p>
+        <p>
+            {{ form.new_password_Repeat.label }}<br>
+            {{ form.new_password_Repeat(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
