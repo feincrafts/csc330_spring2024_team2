@@ -15,12 +15,12 @@ def load_user(user_id):
 #temporary home page
 @app.route('/home')
 def homepage():
-	return "Temporary Home page"
+	return render_template('homepage.html', form=form)
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')
 def loggedin():
-     return "Temporary logged in page"
+     return "Temporary successful login page"
 
 @app.route('/register', methods=['GET', 'POST'])
 def registration(): 
@@ -35,6 +35,7 @@ def registration():
             db.session.commit()
             flash('Your account has been created! You can now log in.', 'success')
             return redirect(url_for('login'))
+      return render_template('signup.html', form=form)
       
 
 
@@ -53,7 +54,8 @@ def signin():
         else:
 			#else the user is denied access
             flash('Invalid username or password', 'danger')
-
+      return render_template('login.html', form=form)
+      
 @app.route('/logout')				
 def logout():
     logout_user()
