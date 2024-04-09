@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys
+from app import *
 
 #this function stores the user_id in the session after every route, allowing us to identify each user
 def load_user(user_id):
