@@ -62,3 +62,13 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
+
+@app.route('/forgotpw')
+def reset():
+     form = ForgotPasswordForm()
+     return render_template('forgotpw.html', form=form)
+
+@app.route('/resetpw')
+def reset():
+     form = ResetPasswordForm()
+     return render_template('resetpw.html', form=form)
