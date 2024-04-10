@@ -3,12 +3,8 @@
 <div>
     <form action="" method="post" novalidate>
         <p>
-            {{ form.new_password.label }}<br>
-            {{ form.new_password(size=32) }}
-        </p>
-        <p>
-            {{ form.new_password_Repeat.label }}<br>
-            {{ form.new_password_Repeat(size=32) }}
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}
         </p>
         <p>{{ form.submit() }}</p>
     </form>
