@@ -15,13 +15,11 @@ class RegisterForm(FlaskForm):
     passwordRepeat = PasswordField('Confirm Password', validators = [DataRequired()])
     submit = SubmitField('Register')
 
-class ForgotPassword(FlaskForm):
-    new_password = PasswordField('New Password', validators = [DataRequired()])
-    new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
+class ForgotPasswordForm(FlaskForm):
+    email = StringField('Email', validators = [DataRequired()])
     submit = SubmitField('Change Pasword')
 
-class ResetPassword(FlaskForm):
-    old_password = PasswordField('New Password', validators = [DataRequired()])
+class ResetPasswordForm(FlaskForm):
     new_password = PasswordField('New Password', validators = [DataRequired()])
     new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
     submit = SubmitField('Change Pasword')
