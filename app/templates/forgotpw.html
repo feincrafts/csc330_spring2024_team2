@@ -1,2 +1,15 @@
 <p> Insert Forgot Password Stuff Here </p>
 <!-- TODO form to submit email, then logic to send a unique url to toggle the reset pw stuff-->
+<div>
+    <form action="" method="post" novalidate>
+        <p>
+            {{ form.new_password.label }}<br>
+            {{ form.new_password(size=32) }}
+        </p>
+        <p>
+            {{ form.new_password_Repeat.label }}<br>
+            {{ form.new_password_Repeat(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
