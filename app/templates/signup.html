@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 <!-- TODO: see if the form works -->
+{% block content %}
 <div>
     <form action="" method="post" novalidate>
         <p>
@@ -22,3 +23,4 @@
         <p>{{ form.submit() }}</p>
     </form>
 </div>
+{% endblock %}
