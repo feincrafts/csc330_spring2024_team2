@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Logged-in pages only (has header bar) -->
+<!-- If anyone has a better way to do this please feel free  -->
+
+<!-- Can change background to an image later-->
+<html style="background:rgb(45, 43, 66);">
+    <head>
+        <title>GameTrack</title>
+    </head>
+
+    <body>
+        <div style="text-align: center; padding-top: 10px;">
+            <a href="/planner"> Planner </a>
+            <a href="/news"> News </a>
+            <a href="/forums"> Forums </a>
+            <a href="/shop"> Shop </a>
+            <a href="/settings"> Settings </a>
+            <br>
+        </div>
+        <div id="mainpanel" class="panel">
+            {% block content %}{% endblock %}
+
+        </div>
+
+    </body>
+
+    <!-- Should probably fix height dynamically-->
+    <style>
+        .panel{
+            background:lightsteelblue;
+            width: 75%;
+            min-height: 600px;
+            height: auto;
+            margin: auto;
+            padding: 10px;
+            border-radius: 50px;
+            border-color: rgb(244, 247, 250);
+            border-style: solid;
+            border-width: 7px;
+        }
+
+        a {
+                background-color: rgb(244, 247, 250);
+                padding: 10px;
+                border-radius: 5px;
+                margin: 1px;
+        }
+
+    </style>
+
+</html>
