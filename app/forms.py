@@ -15,11 +15,17 @@ class RegisterForm(FlaskForm):
     passwordRepeat = PasswordField('Confirm Password', validators = [DataRequired()])
     submit = SubmitField('Register')
 
-class ChangePasswordForm(FlaskForm):
-    old_password = PasswordField('Old Password', validators = [DataRequired()])
+class ForgotPassword(FlaskForm):
     new_password = PasswordField('New Password', validators = [DataRequired()])
     new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
     submit = SubmitField('Change Pasword')
+
+class ResetPassword(FlaskForm):
+    old_password = PasswordField('New Password', validators = [DataRequired()])
+    new_password = PasswordField('New Password', validators = [DataRequired()])
+    new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
+    submit = SubmitField('Change Pasword')
+    
     
 class PostForm(FlaskForm):
     post = TextAreaField('Post', validators=[DataRequired()])
