@@ -9,8 +9,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class RegisterForm(FlaskForm):
-    firstname = StringField('First Name', validators = [DataRequired()])
-    lastname = StringField('Last Name', validators = [DataRequired()])
     username = StringField('Username', validators = [DataRequired()])
     email = StringField('Email', validators = [DataRequired()])
     password = PasswordField('Password', validators = [DataRequired()])
@@ -23,4 +21,10 @@ class ChangePasswordForm(FlaskForm):
     new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
     submit = SubmitField('Change Pasword')
     
+class PostForm(FlaskForm):
+    post = TextAreaField('Post', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class ShopCheckoutForm(FlaskForm):
+    points_to_use = StringField('Number of Points', validators = [DataRequired()])
     
