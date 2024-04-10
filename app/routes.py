@@ -16,7 +16,7 @@ def load_user(user_id):
 #temporary home page
 @app.route('/home')
 def homepage():
-	return render_template('homepage.html', form=form)
+	return render_template('planner.html')
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')
