@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, redirect, url_for, flash, session
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm
 from app.models import User, Game, Task, Planner
 from app import db
 from flask_sqlalchemy import SQLAlchemy
