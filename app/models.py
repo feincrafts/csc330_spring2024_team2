@@ -38,6 +38,10 @@ class Task(db.Model):
     users = db.relationship('User', secondary='user_task', backref='tasks')
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     
+    def mark_as_complete(self):
+        self.complete = True
+        db.session.commit()
+    
     def __repr__(self):
         return '{} {}'.format(self.goal, self.complete)
 
