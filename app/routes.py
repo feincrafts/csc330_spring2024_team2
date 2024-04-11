@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, redirect, url_for, flash, session
-from app.forms import LoginForm, RegisterForm, ChangePasswordForm
+from app.forms import LoginForm, RegisterForm
 from app.models import User, Game, Task, Planner
 from app import db
 from flask_sqlalchemy import SQLAlchemy
@@ -64,7 +64,7 @@ def logout():
     return redirect(url_for('home'))
 
 @app.route('/forgotpw')
-def reset():
+def forgot():
      form = ForgotPasswordForm()
      return render_template('forgotpw.html', form=form)
 
