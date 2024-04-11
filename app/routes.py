@@ -13,6 +13,10 @@ from app import *
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route('/')
+def default():
+    return redirect('/login')
+
 #temporary home page
 @app.route('/home')
 def homepage():
