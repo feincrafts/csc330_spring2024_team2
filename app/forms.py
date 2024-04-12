@@ -30,5 +30,6 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class ShopCheckoutForm(FlaskForm):
+    quantity = StringField('Quantity', validators = [DataRequired()])
     points_to_use = StringField('Number of Points', validators = [DataRequired()])
     
