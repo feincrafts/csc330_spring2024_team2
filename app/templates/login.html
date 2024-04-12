@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- will add styling later -->
-<div class = "panel" style="border-radius: 25px; background-color: rgb(218, 218, 218); min-height: 400px;">
-   <!-- TODO: see if the form works -->
+<div class = "panel subpanel">
     <form action="" method="post" novalidate>
         <p>
             {{ form.username.label }}<br>
@@ -15,9 +13,7 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-    <!-- ideally this will lead to the forgot pw screen-->
     <a href="/register"> No Account? Sign up here ! </a> <br>
-    <!-- does NOT work yet we need a route for this -->
-    <a href="/forgotpw"> Forgot Password (TODO) </a>
+    <a href="/forgotpw"> Forgot Password </a>
 </div>
 {% endblock %}

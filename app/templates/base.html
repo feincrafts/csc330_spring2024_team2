@@ -3,6 +3,8 @@
 <html style="background:rgb(45, 43, 66);">
     <head>
         <title>GameTrack</title>
+        <!-- learned how to do this from https://pythonhow.com/python-tutorial/flask/Adding-CSS-styling-to-your-website/ -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
 
     <body>
@@ -12,23 +14,5 @@
         </div>
 
     </body>
-
-    <!-- Should probably fix height dynamically-->
-    <style>
-        .panel{
-            background:lightsteelblue;
-            width: 75%;
-            min-height: 600px;
-            height: auto;
-            margin: auto;
-            margin-top: 5%;
-            padding: 10px;
-            border-radius: 50px;
-            border-color: rgb(244, 247, 250);
-            border-style: solid;
-            border-width: 7px;
-        }
-
-    </style>
 
 </html>
