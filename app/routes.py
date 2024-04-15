@@ -33,8 +33,8 @@ def registration():
       #validate_on_submit checks if the request is a post or not
       if form.validate_on_submit():
             #takes the inputted password and transformed it into a hash, to better secure the accounts
-            hashed_password = generate_password_hash(form.password.data, method='scrypt', salt_length = 16)
-            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            password = form.password.data
+            new_user = User(username=form.username.data, email=form.email.data, password=password)
             #after inputting all the new information, it is added and committed into the db
             db.session.add(new_user)
             db.session.commit()
@@ -50,16 +50,21 @@ def signin():
       #validate_on_submit checks if the request is a post or not
       if form.validate_on_submit():
         #filters throug the db by username and then checks if the hashed password is the same as the inputted
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and check_password_hash(user.password, form.password.data):
+        username = form.username.data
+        user = db.session.query(User).filter_by(username=username).first()
+        if user is None:
+            form.password.data = ''
+            form.username.data = ''
+            return render_template('signup.html', form=form)
+        if not user.check_password is None:
+            form.password.data = ''
+            form.username.data = ''
+            return render_template('signup.html', form=form)
             #if successfuk the user is logged in
-            login_user(user)
-            flash('Logged in successfully!', 'success')
-            return redirect('/loggedin')
-        else:
-			#else the user is denied access
-            flash('Invalid username or password', 'danger')
-      return render_template('login.html', form=form)
+        login_user(user)
+        flash('Logged in successfully!', 'success')
+        return redirect('/loggedin')
+      return render_template('planner.html', form=form)
       
 @app.route('/logout')				
 def logout():
