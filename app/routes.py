@@ -76,9 +76,12 @@ def signin():
       
 @app.route('/logout')				
 def logout():
-    logout_user()
+    try:
+        logout_user()
+    except:
+         print("oops logout broke")
     flash('You have been logged out.', 'info')
-    return redirect(url_for('home'))
+    return redirect('/login')
 
 @app.route('/forgotpw')
 def forgot():
