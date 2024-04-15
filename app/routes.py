@@ -33,13 +33,13 @@ def registration():
       #validate_on_submit checks if the request is a post or not
       if form.validate_on_submit():
             #takes the inputted password and transformed it into a hash, to better secure the accounts
-            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            hashed_password = generate_password_hash(form.password.data, method='scrypt', salt_length = 16)
             new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
             #after inputting all the new information, it is added and committed into the db
             db.session.add(new_user)
             db.session.commit()
             flash('Your account has been created! You can now log in.', 'success')
-            return redirect(url_for('login'))
+            return redirect('/login')
       return render_template('signup.html', form=form)
       
 
@@ -55,7 +55,7 @@ def signin():
             #if successfuk the user is logged in
             login_user(user)
             flash('Logged in successfully!', 'success')
-            return redirect(url_for('loggedin'))
+            return redirect('/loggedin')
         else:
 			#else the user is denied access
             flash('Invalid username or password', 'danger')

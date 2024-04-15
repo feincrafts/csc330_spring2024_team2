@@ -4,13 +4,13 @@ from datetime import datetime  #use this to add time implementation
 
 
 class User(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True, unique=True, nullable=False)
     password = db.Column(db.String(64), index=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
-    games = db.relationship('Game', secondary='planner', backref='users')
-    planner = db.relationship('Planner', backref='user', lazy='True', uselist=False)
+    games = db.relationship('Game', secondary='planner', backref='user')
+    planner = db.relationship('Planner', backref='user', lazy=True, uselist=False)
     
     #using werkzeug.security here to hash passwords
     def set_password(self, password):
@@ -26,7 +26,7 @@ class Game(db.Model):
     __tablename__ = 'game'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, nullable=False)
-    users = db.relationship("User", secondary='planner', backref='games')
+    users = db.relationship("User", secondary='planner', backref='game')
     tasks = db.relationship('Task', backref='game', lazy=True)
     planner_id = db.Column(db.Integer, db.ForeignKey('planner.id'), nullable=False)
     
@@ -38,7 +38,8 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
-    users = db.relationship('User', secondary='user_task', backref='tasks')
+    #users = db.relationship('User', secondary='user_task', backref='tasks')
+    #users = db.relationship('User', backref='tasks')
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     
     def mark_as_complete(self):
@@ -52,7 +53,7 @@ class Planner(db.Model):
     __tablename__ = 'planner'
     id = db.Column(db.Integer, primary_key=True)
     games = db.relationship('Game', backref='planner', lazy=True)
-    tasks = db.relationship('Task', backref='planner', lazy=True)
+    #tasks = db.relationship('Task', backref='planner', lazy=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     #note to self add html templates here i think
 
