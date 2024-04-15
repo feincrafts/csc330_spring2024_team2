@@ -1,6 +1,11 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime  #use this to add time implementation
+from flask_login import UserMixin
+
+def get_user(username):
+    user = User.query.filter_by(username=username).first()
+    return user
 
 
 class User(db.Model):
