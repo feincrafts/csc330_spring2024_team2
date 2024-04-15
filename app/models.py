@@ -4,6 +4,7 @@ from datetime import datetime  #use this to add time implementation
 
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True, unique=True, nullable=False)
     password = db.Column(db.String(64), index=True, nullable=False)
@@ -22,6 +23,7 @@ class User(db.Model):
         return '{} {}'.format(self.username, self.email)
 
 class Game(db.Model):
+    __tablename__ = 'game'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, nullable=False)
     users = db.relationship("User", secondary='planner', backref='games')
@@ -29,9 +31,10 @@ class Game(db.Model):
     planner_id = db.Column(db.Integer, db.ForeignKey('planner.id'), nullable=False)
     
     def __repr__(self):
-        return '{} {}'.format(self.name)
+        return '{}'.format(self.name)
 
 class Task(db.Model):
+    __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
@@ -46,6 +49,7 @@ class Task(db.Model):
         return '{} {}'.format(self.goal, self.complete)
 
 class Planner(db.Model):
+    __tablename__ = 'planner'
     id = db.Column(db.Integer, primary_key=True)
     games = db.relationship('Game', backref='planner', lazy=True)
     tasks = db.relationship('Task', backref='planner', lazy=True)
@@ -61,4 +65,4 @@ class Planner(db.Model):
         return False
     
     def __repr__(self):
-        return '{} {}'.format(self)
+        return '{}'.format(self)

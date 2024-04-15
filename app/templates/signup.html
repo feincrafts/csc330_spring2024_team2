@@ -4,6 +4,7 @@
 {% block content %}
 <div>
     <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
         <p>
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}
@@ -24,5 +25,14 @@
         <!-- TODO: make it go back to log in after a submit-->
         <p>{{ form.submit() }}</p>
     </form>
+
+    <!-- temp debug -->
+    {% for user in users %}
+            <p> there is an entry!</p>
+			<p>{{user.username}}</p>
+			<p>{{user.email}}</p>
+			<p>{{user.password}}</p>
+            <br/>
+	{% endfor %}
 </div>
 {% endblock %}
