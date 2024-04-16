@@ -29,6 +29,8 @@ def default():
 
 #temporary home page
 @app.route('/home')
+#this might make it so you need to login update: it doesn't work rn lol
+@login_required
 def homepage():
 	return render_template('planner.html')
 
