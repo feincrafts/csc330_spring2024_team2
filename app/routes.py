@@ -41,19 +41,19 @@ def loggedin():
 
 @app.route('/register', methods=['GET', 'POST'])
 def registration(): 
-      form = RegisterForm()
-      #validate_on_submit checks if the request is a post or not
-      if form.validate_on_submit():
-            #takes the inputted password and transformed it into a hash, to better secure the accounts
-            password = form.password.data
-            new_user = User(username=form.username.data, email=form.email.data, password=password)
-            #after inputting all the new information, it is added and committed into the db
-            # todo validate unique usernames
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Your account has been created! You can now log in.', 'success')
-            return redirect('/login')
-      return render_template('signup.html', form=form)
+    form = RegisterForm()
+     #validate_on_submit checks if the request is a post or not
+    if form.validate_on_submit():
+         #takes the inputted password and transformed it into a hash, to better secure the accounts
+        hashed_password = generate_password_hash(form.password.data)
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        #after inputting all the new information, it is added and committed into the db
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Your account has been created! You can now log in.', 'success')
+        return redirect('/login')
+    return render_template('signup.html', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def signin():
@@ -62,17 +62,16 @@ def signin():
     if form.validate_on_submit():
         #filters throug the db by username and then checks if the hashed password is the same as the inputted
         username = form.username.data
-        user = db.session.query(User).filter_by(username=username).first()
+        password = form.password.data
+        user = User.query.filter_by(username=username).first()
         if user is None:
             return redirect('/register')
-        # todo make it so you can't log in with the wrong password
+        elif not check_password_hash(user.password, password):
+             flash('Wrong password bro','error')
+             return redirect('/login')
         else:
-            try:
-                 #todo fix this
-                 login_user(user)
-            except:
-                 print("oops")
-            flash('Logged in successfully!', 'success')
+            login_user(user)
+            flash('Logged in!','success')
             return redirect('/home')
     return render_template('login.html', form=form)
       
