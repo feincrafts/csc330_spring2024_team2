@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     games = db.relationship('Game', secondary='planner', backref='user')
     planner = db.relationship('Planner', backref='user', lazy=True, uselist=False)
-    admin = db.Column(db.Boolean, index=True, default=False)
+    #admin = db.Column(db.Boolean, index=True, default=False)
     
     #using werkzeug.security here to hash passwords
     def set_password(self, password):
