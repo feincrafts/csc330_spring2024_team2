@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, redirect, url_for, flash, session
-from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm
+from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm, CreateEventForm
 from app.models import *
 from app import db
 from flask_sqlalchemy import SQLAlchemy
@@ -101,3 +101,8 @@ def forgot():
 def reset():
      form = ResetPasswordForm()
      return render_template('resetpw.html', form=form)
+
+@app.route('/create_event')
+def create_event():
+     form = CreateEventForm()
+     return render_template('create_event.html', form=form)

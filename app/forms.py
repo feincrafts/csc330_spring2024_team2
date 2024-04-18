@@ -17,12 +17,12 @@ class RegisterForm(FlaskForm):
 
 class ForgotPasswordForm(FlaskForm):
     email = StringField('Email', validators = [DataRequired()])
-    submit = SubmitField('Change Pasword')
+    submit = SubmitField('Change Password')
 
 class ResetPasswordForm(FlaskForm):
     new_password = PasswordField('New Password', validators = [DataRequired()])
     new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
-    submit = SubmitField('Change Pasword')
+    submit = SubmitField('Change Password')
     
     
 class PostForm(FlaskForm):
@@ -39,9 +39,11 @@ class CreateEventForm(FlaskForm):
     date = DateField('Date', validators = [DataRequired()])
     description =  TextAreaField('Event Description', validators = [DataRequired()])
     participants = IntegerField('Number of Participants', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 class CreateTaskForm(FlaskForm):
     title = StringField('Task Title', validators=[DataRequired()])
     game = StringField('Game',validators=[DataRequired ()])
     date = DateField('Date', validators = [DataRequired()])
     description =  TextAreaField('Task Description', validators = [DataRequired()])
+    submit = SubmitField('Submit')
