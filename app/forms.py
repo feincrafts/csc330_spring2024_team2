@@ -33,3 +33,15 @@ class ShopCheckoutForm(FlaskForm):
     quantity = StringField('Quantity', validators = [DataRequired()])
     points_to_use = StringField('Number of Points', validators = [DataRequired()])
     
+class CreateEventForm(FlaskForm):
+    title = StringField('Event Title', validators=[DataRequired()])
+    game = StringField('Game',validators=[DataRequired ()])
+    date = DateField('Date', validators = [DataRequired()])
+    description =  TextAreaField('Event Description', validators = [DataRequired()])
+    participants = IntegerField('Number of Participants', validators=[DataRequired()])
+
+class CreateTaskForm(FlaskForm):
+    title = StringField('Task Title', validators=[DataRequired()])
+    game = StringField('Game',validators=[DataRequired ()])
+    date = DateField('Date', validators = [DataRequired()])
+    description =  TextAreaField('Task Description', validators = [DataRequired()])gi
