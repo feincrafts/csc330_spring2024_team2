@@ -44,4 +44,4 @@ class CreateTaskForm(FlaskForm):
     title = StringField('Task Title', validators=[DataRequired()])
     game = StringField('Game',validators=[DataRequired ()])
     date = DateField('Date', validators = [DataRequired()])
-    description =  TextAreaField('Task Description', validators = [DataRequired()])gi
+    description =  TextAreaField('Task Description', validators = [DataRequired()])
