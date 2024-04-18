@@ -13,9 +13,11 @@ from flask_login import LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(username):
     return get_user(username)
+    
 
 """
 #this function stores the user_id in the session after every route, allowing us to identify each user
@@ -29,8 +31,7 @@ def default():
 
 #temporary home page
 @app.route('/home')
-#this might make it so you need to login
-@login_required
+#@login_required
 def homepage():
 	return render_template('planner.html')
 
@@ -44,19 +45,23 @@ def registration():
     form = RegisterForm()
      #validate_on_submit checks if the request is a post or not
     if form.validate_on_submit():
+        if form.password.data != form.passwordRepeat.data: #makes sure passwords match
+            return redirect('/register')
          #takes the inputted password and transformed it into a hash, to better secure the accounts
         hashed_password = generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         #after inputting all the new information, it is added and committed into the db
         db.session.add(new_user)
         db.session.commit()
-        flash('Your account has been created! You can now log in.', 'success')
+        print("New user registered:", new_user.username)
+        print("Hashed Password:", new_user.password)
         return redirect('/login')
     return render_template('signup.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def signin():
+    logout_user()
     form = LoginForm()
     #validate_on_submit checks if the request is a post or not
     if form.validate_on_submit():
@@ -64,14 +69,16 @@ def signin():
         username = form.username.data
         password = form.password.data
         user = User.query.filter_by(username=username).first()
+        print("Username and email: ",user) #prints user and email for now
         if user is None:
+            print("User not found")
             return redirect('/register')
         elif not check_password_hash(user.password, password):
-             flash('Wrong password bro','error')
+             print("PW is wrong")
              return redirect('/login')
         else:
+            print("Congrats you logged in")
             login_user(user)
-            flash('Logged in!','success')
             return redirect('/home')
     return render_template('login.html', form=form)
       
@@ -79,6 +86,7 @@ def signin():
 def logout():
     try:
         logout_user()
+        print("You're logged out!")
     except:
          print("oops logout broke")
     flash('You have been logged out.', 'info')
