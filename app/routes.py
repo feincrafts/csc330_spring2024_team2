@@ -30,7 +30,7 @@ def default():
     return redirect('/login')
 
 #temporary home page
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 #@login_required
 def homepage():
 	return render_template('planner.html')
@@ -120,9 +120,11 @@ def create_event():
 
 @app.route('/calendar', methods=['GET','POST'])
 def calendar():
+     # to get more info, elaborate on this and adjust models.py repr
+     # todo filter by current user 
+     # todo - how to store/get current user??? 
      results = db.session.query(Event.title, Event.date, Event.description)
-     print(results)
-     #events = Event.query.filter_by(user=task.user) #todo implement storing current user
+     #results = Event.query.filter_by(user=task.user) #ignore this it doesn't work
      return render_template('calendar.html', events=results)
 
 @app.route('/settings')
