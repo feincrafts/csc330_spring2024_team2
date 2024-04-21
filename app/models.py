@@ -44,6 +44,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
+    assigneduser = db.Column(db.String(32), db.ForeignKey('user.username'), nullable=False)
     #users = db.relationship('User', secondary='user_task', backref='tasks')
     #users = db.relationship('User', backref='tasks')
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
@@ -73,3 +74,19 @@ class Planner(db.Model):
     
     def __repr__(self):
         return '{}'.format(self)
+
+class Event(db.Model):
+    __tablename__ = 'events'
+    id = db.Column(db.Integer, primary_key=True)
+    game = db.Column(db.String(64), db.ForeignKey('game.id'), nullable=False)
+    title =  db.Column(db.String(64))
+    #may have to fix date
+    date = db.Column(db.String(32))
+    description = db.Column(db.String(256))
+    participants = db.Column(db.Integer)
+    #user = db.Column(db.String(32), db.ForeignKey('user.username'))
+
+    #todo add_event ? 
+
+    def __repr__(self):
+        return '{} {} {}'.format(self.title, self.date, self.description)

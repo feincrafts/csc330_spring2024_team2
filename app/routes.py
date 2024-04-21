@@ -4,7 +4,7 @@ from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPassword
 from app.models import *
 from app import db
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import FlaskLoginClient, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys
 from app import *
@@ -102,7 +102,29 @@ def reset():
      form = ResetPasswordForm()
      return render_template('resetpw.html', form=form)
 
-@app.route('/create_event')
+@app.route('/create_event', methods=['GET', 'POST'])
 def create_event():
      form = CreateEventForm()
+     print()
+     if form.validate_on_submit():
+        # todo, implement unique id
+        # todo implement date
+        # todo get way of getting current user
+        new_event = Event(title=form.title.data, game=str(form.game.data), date=form.date.data, description=form.description.data, participants=form.participants.data)
+        #after inputting all the new information, it is added and committed into the db
+        db.session.add(new_event)
+        print(new_event)
+        db.session.commit()
+        return redirect('/calendar')
      return render_template('create_event.html', form=form)
+
+@app.route('/calendar', methods=['GET','POST'])
+def calendar():
+     results = db.session.query(Event.title, Event.date, Event.description)
+     print(results)
+     #events = Event.query.filter_by(user=task.user) #todo implement storing current user
+     return render_template('calendar.html', events=results)
+
+@app.route('/settings')
+def settings():
+     return render_template('settings.html')
