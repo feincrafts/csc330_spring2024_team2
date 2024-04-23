@@ -40,6 +40,10 @@ def homepage():
 def loggedin():
      return "Temporary successful login page"
 
+@app.route('/loggedin_ad')
+def loggedin_ad():
+     return 'Temporary login as an admin'
+
 @app.route('/register', methods=['GET', 'POST'])
 def registration(): 
     form = RegisterForm()
@@ -66,20 +70,23 @@ def signin():
     #validate_on_submit checks if the request is a post or not
     if form.validate_on_submit():
         #filters throug the db by username and then checks if the hashed password is the same as the inputted
-        username = form.username.data
-        password = form.password.data
-        user = User.query.filter_by(username=username).first()
+        username_in = form.username.data
+        password_in = form.password.data
+        user = User.query.filter_by(username=username_in).first()
         print("Username and email: ",user) #prints user and email for now
         if user is None:
             print("User not found")
             return redirect('/register')
-        elif not check_password_hash(user.password, password):
+        elif user.admin:
+            return redirect('/loggedin_ad')
+        elif not check_password_hash(user.password, password_in):
              print("PW is wrong")
              return redirect('/login')
         else:
             print("Congrats you logged in")
             login_user(user)
             return redirect('/home')
+
     return render_template('login.html', form=form)
       
 @app.route('/logout')				
@@ -105,6 +112,7 @@ def reset():
 @app.route('/create_event', methods=['GET', 'POST'])
 def create_event():
      form = CreateEventForm()
+
      print()
      if form.validate_on_submit():
         # todo, implement unique id
@@ -130,3 +138,6 @@ def calendar():
 @app.route('/settings')
 def settings():
      return render_template('settings.html')
+
+     return render_template('create_event.html', form=form)
+
