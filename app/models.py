@@ -14,8 +14,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(32), index=True, unique=True, nullable=False)
     password = db.Column(db.String(64), index=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
-    games = db.relationship('Game', secondary='planner', backref='user')
-    planner = db.relationship('Planner', backref='user', lazy=True, uselist=False)
+    #games = db.relationship('Game', secondary='planner', backref='user')
+    #planner = db.relationship('Planner', backref='user', lazy=True, uselist=False)
     #admin = db.Column(db.Boolean, index=True, default=False)
     
     #using werkzeug.security here to hash passwords
@@ -32,9 +32,9 @@ class Game(db.Model):
     __tablename__ = 'game'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, nullable=False)
-    users = db.relationship("User", secondary='planner', backref='game')
+    #users = db.relationship("User", secondary='planner', backref='game')
     tasks = db.relationship('Task', backref='game', lazy=True)
-    planner_id = db.Column(db.Integer, db.ForeignKey('planner.id'), nullable=False)
+    #planner_id = db.Column(db.Integer, db.ForeignKey('planner.id'), nullable=False)
     
     def __repr__(self):
         return '{}'.format(self.name)
@@ -54,7 +54,7 @@ class Task(db.Model):
     
     def __repr__(self):
         return '{} {}'.format(self.goal, self.complete)
-
+""""
 class Planner(db.Model):
     __tablename__ = 'planner'
     id = db.Column(db.Integer, primary_key=True)
@@ -73,3 +73,4 @@ class Planner(db.Model):
     
     def __repr__(self):
         return '{}'.format(self)
+"""
