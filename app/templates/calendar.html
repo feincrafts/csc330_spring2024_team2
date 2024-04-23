@@ -1,0 +1,31 @@
+{% extends "inapp_base.html" %}
+
+{% block content %}
+
+    <h3 style="text-align: center;"> Event Calendar </h3>
+
+    <a href="/create_event"> Create New Event </a>
+
+    <!-- TODO: fix this so it's by user -->
+    <!-- go to routes to get query results -->
+    <table style="text-align: center; margin-left: 35%; margin-top: -5%;">
+        <th> Event Name </th>
+        <th> Date </th>
+        <th> Description </th>
+        {% for ev in events %}
+        <tr>
+            <td> {{ev.title}} </td>
+            <td> {{ev.date}} </td>
+            <td> {{ev.description}} </td>
+            <br/>
+        </tr>
+        {% endfor %}
+    </table>
+    <style>
+        td {
+            padding: 10px;
+
+        }
+    </style>
+
+{% endblock %}
