@@ -24,15 +24,6 @@ class ResetPasswordForm(FlaskForm):
     new_password_Repeat = PasswordField('Confirm New Password', [DataRequired()])
     submit = SubmitField('Change Password')
     
-    
-class PostForm(FlaskForm):
-    post = TextAreaField('Post', validators=[DataRequired()])
-    submit = SubmitField('Submit')
-
-class ShopCheckoutForm(FlaskForm):
-    quantity = StringField('Quantity', validators = [DataRequired()])
-    points_to_use = StringField('Number of Points', validators = [DataRequired()])
-    
 class CreateEventForm(FlaskForm):
     title = StringField('Event Title', validators=[DataRequired()])
     game = StringField('Game',validators=[DataRequired ()])
