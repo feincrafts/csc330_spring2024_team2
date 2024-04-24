@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, redirect, url_for, flash, session
-from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm, CreateEventForm
+from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm, CreateEventForm, CreateTaskForm
 from app.models import *
 from app import db
 from flask_sqlalchemy import SQLAlchemy
@@ -141,3 +141,7 @@ def settings():
 
      return render_template('create_event.html', form=form)
 
+@app.route('/create_task', methods=['GET', 'POST'])
+def create_task():
+     form = CreateTaskForm()
+     return render_template('create_task.html', form=form)
