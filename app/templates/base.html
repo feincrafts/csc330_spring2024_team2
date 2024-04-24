@@ -5,9 +5,13 @@
         <title>GameTrack</title>
         <!-- learned how to do this from https://pythonhow.com/python-tutorial/flask/Adding-CSS-styling-to-your-website/ -->
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    </head>
 
+    </head>
+    <header>
+        <h1>GameTrack</h1>
+    </header>
     <body>
+
         <div id="mainpanel" class="panel">
             {% block content %}{% endblock %}
 

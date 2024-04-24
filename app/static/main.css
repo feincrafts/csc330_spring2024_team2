@@ -1,4 +1,7 @@
 /* Should probably fix height dynamically */
+body {
+    font-family: Verdana, sans-serif;
+}
 .panel{
     background:lightsteelblue;
     width: 75%;
@@ -55,7 +58,7 @@ input[type="text"], input[type="password"] {
 input[type="submit"] {
     background-color: #007bff;
     color: #fff;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -77,4 +80,16 @@ input[type="submit"]:hover {
 
 .register-link a:hover {
     text-decoration: underline;
+}
+
+header {
+    background-color: #0b0b0b;
+    color: #fff;
+    padding: 5px 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 36px;
 }
