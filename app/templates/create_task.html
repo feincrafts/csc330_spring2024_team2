@@ -1,0 +1,30 @@
+{% extends "inapp_base.html" %}
+
+{% block content %}
+
+<!-- fixing a bit of subpanel styling -->
+<div class = "panel subpanel" style="transform: translate(0%, 7%);">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(size=32) }}
+        </p>
+        <p>
+            {{ form.game.label }}<br>
+            {{ form.game(size=32) }}
+        </p>
+        <p>
+            {{ form.date.label }}<br>
+            {{ form.date(size=32) }}
+        </p>
+        <p>
+            {{ form.description.label }}<br>
+            {{ form.description(size=32) }}
+        </p>
+        
+        <p>{{ form.submit() }}</p>
+    </form>
+
+</div>
+{% endblock %}
