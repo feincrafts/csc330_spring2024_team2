@@ -35,6 +35,13 @@ def default():
 def homepage():
     form = AddGameForm()
     print(session["username"])
+    # todo on submit, get form field and search in db
+    # then it links game to user 
+    # altho see how task user game are linked
+    # cuz ig its like for game where user is user 
+    # for task where game = game  and user is user 
+    if form.validate_on_submit():
+        pass
     return render_template('planner.html', form=form)
 
 #temporary logged in page to test if/when users have successfully logged in
