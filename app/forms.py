@@ -38,3 +38,7 @@ class CreateTaskForm(FlaskForm):
     date = DateField('Date', validators = [DataRequired()])
     description =  TextAreaField('Task Description', validators = [DataRequired()])
     submit = SubmitField('Submit')
+
+class AddGameForm(FlaskForm):
+    game_name = StringField('Add Game', validators=[DataRequired()])
+    submit = SubmitField('Submit')

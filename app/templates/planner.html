@@ -4,7 +4,16 @@
 
 <h3 style="text-align: center;"> Today's Planner </h3>
 
-   <!-- TODO add box to search game from db , on select it adds game?  --> 
+<!-- TODO add box to search game from db , on select it adds game?  --> 
+<!-- if it has game in db hopefully itll work-->
+<!-- todo add img per game  if time -->
+<form action="" method="post" novalidate>
+   <p>
+      {{ form.game_name.label }}<br>
+      {{ form.game_name(size=32) }}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
 
 {% endblock %}
 

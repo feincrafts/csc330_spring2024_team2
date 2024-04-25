@@ -90,9 +90,9 @@ class Event(db.Model):
     date = db.Column(db.String(32))
     description = db.Column(db.String(256))
     participants = db.Column(db.Integer)
-    #user = db.Column(db.String(32), db.ForeignKey('user.username'))
+    user = db.Column(db.String(32), db.ForeignKey('user.username'))
 
     #todo add_event ? 
 
     def __repr__(self):
-        return '{} {} {}'.format(self.title, self.date, self.description)
+        return '{} {} {} {}'.format(self.title, self.date, self.description, self.user)

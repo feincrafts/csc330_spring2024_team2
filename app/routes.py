@@ -1,6 +1,6 @@
 
-from flask import Flask, render_template, redirect, url_for, flash, session
-from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm, CreateEventForm, CreateTaskForm
+from flask import Flask, render_template, redirect, url_for, flash, session, request
+from app.forms import *
 from app.models import *
 from app import db
 from flask_sqlalchemy import SQLAlchemy
@@ -33,7 +33,9 @@ def default():
 @app.route('/home', methods=['GET', 'POST'])
 #@login_required
 def homepage():
-	return render_template('planner.html')
+    form = AddGameForm()
+    print(session["username"])
+    return render_template('planner.html', form=form)
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')
@@ -85,6 +87,7 @@ def signin():
         else:
             print("Congrats you logged in")
             login_user(user)
+            session['username'] = request.form['username']
             return redirect('/home')
 
     return render_template('login.html', form=form)
@@ -94,6 +97,7 @@ def logout():
     try:
         logout_user()
         print("You're logged out!")
+        session.pop('username', None)
     except:
          print("oops logout broke")
     flash('You have been logged out.', 'info')
@@ -115,10 +119,7 @@ def create_event():
 
      print()
      if form.validate_on_submit():
-        # todo, implement unique id
-        # todo implement date
-        # todo get way of getting current user
-        new_event = Event(title=form.title.data, game=str(form.game.data), date=form.date.data, description=form.description.data, participants=form.participants.data)
+        new_event = Event(title=form.title.data, game=str(form.game.data), date=form.date.data, description=form.description.data, participants=form.participants.data, user=session["username"])
         #after inputting all the new information, it is added and committed into the db
         db.session.add(new_event)
         print(new_event)
@@ -129,9 +130,8 @@ def create_event():
 @app.route('/calendar', methods=['GET','POST'])
 def calendar():
      # to get more info, elaborate on this and adjust models.py repr
-     # todo filter by current user 
-     # todo - how to store/get current user??? 
-     results = db.session.query(Event.title, Event.date, Event.description)
+     # also, currently calendar.html filters based on user, not this query
+     results = db.session.query(Event.title, Event.date, Event.description, Event.user)
      #results = Event.query.filter_by(user=task.user) #ignore this it doesn't work
      return render_template('calendar.html', events=results)
 
