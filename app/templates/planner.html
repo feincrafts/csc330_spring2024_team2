@@ -17,23 +17,24 @@
 
 <!-- TODO implement add/remove game button -->
 <!-- TODO add img per game  if time -->
+
+<!-- TODO fix bug -->
 {% for g in games %}
         <tr>
             <td> {{g.game}} </td>
             <br/>
+            <ul>
             {% for t in tasks %}
-
-               <!-- TODO implement grabs every users games and every users' subscribed tasks -->
-               <!-- every task should have a checkmark (may affect db) -->
-               <!-- every game should have an enter custom goals to add to this-->
+               <li><input type="checkbox"> {{t.goal}}</li>
+               <br/>
+            {% endfor %}
+            {% for ct in ctasks %}
+               <li><input type="checkbox"> {{ct.goal}}</li>
+               <br/>
+               <!-- TODO add task button and functionality -->
 
             {% endfor %}
-            {% for c in ctasks %}
-
-               <!-- its gonna have to pull from custom tasks TOO -->
-               <!-- TODO add task  -->
-
-            {% endfor %}
+            </ul>
         </tr>
 {% endfor %}
 

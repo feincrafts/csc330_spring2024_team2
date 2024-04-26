@@ -43,8 +43,12 @@ def homepage():
             db.session.add(insertGame)
             db.session.commit()
             return redirect('/home')
-    results = db.session.query(User_Games.username, User_Games.game).filter_by(username=session["username"])
-    return render_template('planner.html', form=form, games=results)
+    gameresults = db.session.query(User_Games.username, User_Games.game).filter_by(username=session["username"])
+    # todo stop a task from going under all games 
+    taskresults = db.session.query(Task.goal, Task.complete, Task.assigneduser, Task.game_id).filter_by(assigneduser=session["username"])
+    # todo fix why custom task appears 3-4+ times???? 
+    customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, Task.game_id).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
+    return render_template('planner.html', form=form, games=gameresults, tasks = taskresults, ctasks = customtaskresults )
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')
