@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
 class Game(db.Model):
     __tablename__ = 'game'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, nullable=False)
+    name = db.Column(db.String(64), index=True, nullable=False, primary_key = True)
     tasks = db.relationship('Task', backref='game', lazy=True)
     
     def __repr__(self):
@@ -60,6 +60,7 @@ class Task(db.Model):
     #users = db.relationship('User', secondary='user_task', backref='tasks')
     #users = db.relationship('User', backref='tasks')
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    #game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
     
     def mark_as_complete(self):
         self.complete = True
@@ -77,7 +78,8 @@ class CustomTask(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     task_creator = db.relationship('User', backref='user_tasks')
-    game = db.relationship('Game', backref='custom_tasks')
+    #game = db.relationship('Game', backref='custom_tasks')
+    #game_name = db.Column(db.String(64), db.ForeignKey('game.name'))
     
     #Creates custom tasks, make sure to use current_user.id to insert into creator_id
     @staticmethod
