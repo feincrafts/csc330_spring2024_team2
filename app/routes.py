@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, url_for, flash, session, req
 from app.forms import *
 from app.models import *
 from app import db
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import *
 from flask_login import FlaskLoginClient, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys
@@ -35,26 +35,16 @@ def default():
 def homepage():
     form = AddGameForm()
     #print(session["username"])
-    # todo on submit, get form field and search in db
-    # then it links game to user 
-    # altho see how task user game are linked
-    # cuz ig its like for game where user is user 
-    # for task where game = game  and user is user 
     if form.validate_on_submit():
-        game_name = form.game_name.data
-        testgame = db.session.query(Game).filter_by(name=game_name).first()
-        print("does query work")
-        print(testgame)
-        if testgame != None:
-            #todo add entry in usergame where username=session["username"] and game = testgame
-            pass
-        """
-        if form.game_name.data (in db fix this):
-            new_user_game = user_game(username=session["username"], game=form.game_name.data)
-            db.session.add(new_user_game)
+        formGameName = form.game_name.data
+        getGame = db.session.query(Game).filter_by(name=formGameName).first()
+        if getGame != None:
+            insertGame = User_Games(username=session["username"], game=formGameName)
+            db.session.add(insertGame)
             db.session.commit()
-        """
-    return render_template('planner.html', form=form)
+            return redirect('/home')
+    results = db.session.query(User_Games.username, User_Games.game).filter_by(username=session["username"])
+    return render_template('planner.html', form=form, games=results)
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')

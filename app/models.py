@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(64), index=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     admin = db.Column(db.Boolean, index=True, default=False)
-    games = db.relationship('Game', secondary='user_game', backref='users')
+    games = db.relationship('Game', secondary='user_games', backref='users')
     #using werkzeug.security here to hash passwords
     def set_password(self, password):
         self.password = generate_password_hash(password) 
@@ -36,8 +36,20 @@ class Game(db.Model):
         return '{}'.format(self.name)
 
 #Many to many relationship table so we can connect games to Users
+"""
 user_game = db.Table('user_game', db.Column('username', db.Integer, db.ForeignKey('user.username'), primary_key=True),
     db.Column('game', db.Integer, db.ForeignKey('game.name'), primary_key=True))
+"""
+
+class User_Games(db.Model):
+    __tablename__ = "user_games"
+
+    username = db.Column(db.String(32), db.ForeignKey('user.username'), primary_key=True)
+    game = db.Column(db.String(64), db.ForeignKey('game.name'), primary_key=True)
+
+    def __repr__(self):
+        return '{} {}'.format(self.username, self.game)
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -91,7 +103,7 @@ class CustomTask(db.Model):
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    game = db.Column(db.String(64), db.ForeignKey('game.id'), nullable=False)
+    game = db.Column(db.String(64), db.ForeignKey('game.id'))
     title =  db.Column(db.String(64))
     #may have to fix date
     date = db.Column(db.String(32))
