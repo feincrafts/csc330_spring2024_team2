@@ -36,8 +36,8 @@ class Game(db.Model):
         return '{}'.format(self.name)
 
 #Many to many relationship table so we can connect games to Users
-user_game = db.Table('user_game', db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('game_id', db.Integer, db.ForeignKey('game.id'), primary_key=True))
+user_game = db.Table('user_game', db.Column('username', db.Integer, db.ForeignKey('user.username'), primary_key=True),
+    db.Column('game', db.Integer, db.ForeignKey('game.name'), primary_key=True))
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -97,7 +97,7 @@ class Event(db.Model):
     date = db.Column(db.String(32))
     description = db.Column(db.String(256))
     participants = db.Column(db.Integer)
-    user = db.Column(db.String(32), db.ForeignKey('user.username'))
+    #user = db.Column(db.String(32), db.ForeignKey('user.username'))
 
     #todo add_event ? 
     #add_event can be called to store the event in the DB, maybe we let the user know what format we need
@@ -107,4 +107,4 @@ class Event(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return '{} {} {} {}'.format(self.title, self.date, self.description, self.user)
+        return '{} {} {}'.format(self.title, self.date, self.description)

@@ -8,10 +8,11 @@
 <!-- if it has game in db hopefully itll work-->
 <!-- todo add img per game  if time -->
 <div>
-   <form action="" method="post" novalidate>
+   <form action="" method="post">
+      {{ form.hidden_tag() }}
       <p>
          {{ form.game_name.label }}<br>
-         {{ form.game_name(size=16) }}
+         {{ form.game_name(size=32) }}
       </p>
       <p>{{ form.submit() }}</p>
    </form>

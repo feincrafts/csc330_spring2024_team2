@@ -34,14 +34,26 @@ def default():
 #@login_required
 def homepage():
     form = AddGameForm()
-    print(session["username"])
+    #print(session["username"])
     # todo on submit, get form field and search in db
     # then it links game to user 
     # altho see how task user game are linked
     # cuz ig its like for game where user is user 
     # for task where game = game  and user is user 
     if form.validate_on_submit():
-        pass
+        game_name = form.game_name.data
+        testgame = db.session.query(Game).filter_by(name=game_name).first()
+        print("does query work")
+        print(testgame)
+        if testgame != None:
+            #todo add entry in usergame where username=session["username"] and game = testgame
+            pass
+        """
+        if form.game_name.data (in db fix this):
+            new_user_game = user_game(username=session["username"], game=form.game_name.data)
+            db.session.add(new_user_game)
+            db.session.commit()
+        """
     return render_template('planner.html', form=form)
 
 #temporary logged in page to test if/when users have successfully logged in
@@ -126,7 +138,7 @@ def create_event():
 
      print()
      if form.validate_on_submit():
-        new_event = Event(title=form.title.data, game=str(form.game.data), date=form.date.data, description=form.description.data, participants=form.participants.data, user=session["username"])
+        new_event = Event(title=form.title.data, game=str(form.game.data), date=form.date.data, description=form.description.data, participants=form.participants.data)
         #after inputting all the new information, it is added and committed into the db
         db.session.add(new_event)
         print(new_event)
@@ -138,7 +150,7 @@ def create_event():
 def calendar():
      # to get more info, elaborate on this and adjust models.py repr
      # also, currently calendar.html filters based on user, not this query
-     results = db.session.query(Event.title, Event.date, Event.description, Event.user)
+     results = db.session.query(Event.title, Event.date, Event.description)
      #results = Event.query.filter_by(user=task.user) #ignore this it doesn't work
      return render_template('calendar.html', events=results)
 

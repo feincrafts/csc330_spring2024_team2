@@ -8,13 +8,11 @@
 
     <!-- go to routes to get query results -->
     <table style="text-align: center; margin-left: 30%;">
-        <th> User </th>
         <th> Event Name </th>
         <th> Date </th>
         <th> Description </th>
-        {% for ev in events if ev.user == session["username"] %}
+        {% for ev in events %}
         <tr>
-            <td> {{ev.user}} </td>
             <td> {{ev.title}} </td>
             <td> {{ev.date}} </td>
             <td> {{ev.description}} </td>
