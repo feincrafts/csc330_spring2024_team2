@@ -4,9 +4,6 @@
 
 <h3 style="text-align: center;"> Today's Planner </h3>
 
-<!-- TODO add box to search game from db , on select it adds game?  --> 
-<!-- if it has game in db hopefully itll work-->
-<!-- todo add img per game  if time -->
 <div>
    <form action="" method="post">
       {{ form.hidden_tag() }}
@@ -18,17 +15,26 @@
    </form>
 </div>
 
+<!-- TODO implement add/remove game button -->
+<!-- TODO add img per game  if time -->
 {% for g in games %}
         <tr>
             <td> {{g.game}} </td>
             <br/>
+            {% for t in tasks %}
+
+               <!-- TODO implement grabs every users games and every users' subscribed tasks -->
+               <!-- every task should have a checkmark (may affect db) -->
+               <!-- every game should have an enter custom goals to add to this-->
+
+            {% endfor %}
+            {% for c in ctasks %}
+
+               <!-- its gonna have to pull from custom tasks TOO -->
+               <!-- TODO add task  -->
+
+            {% endfor %}
         </tr>
 {% endfor %}
 
 {% endblock %}
-
-<!-- TODO implement add/remove game button -->
-
-<!-- TODO implement grabs every users games and every users' subscribed tasks -->
-<!-- every task should have a checkmark -->
-<!-- every game should have an enter custom goals to add to this-->

@@ -105,13 +105,11 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game = db.Column(db.String(64), db.ForeignKey('game.id'))
     title =  db.Column(db.String(64))
-    #may have to fix date
     date = db.Column(db.String(32))
     description = db.Column(db.String(256))
     participants = db.Column(db.Integer)
     #user = db.Column(db.String(32), db.ForeignKey('user.username'))
 
-    #todo add_event ? 
     #add_event can be called to store the event in the DB, maybe we let the user know what format we need
     def add_event(self, title, date, description, participants):
         create_event = Event(title=title, date=date, description=description, participants=participants)
