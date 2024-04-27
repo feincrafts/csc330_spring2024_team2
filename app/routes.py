@@ -39,7 +39,7 @@ def homepage():
         formGameName = form.game_name.data
         getGame = db.session.query(Game).filter_by(name=formGameName).first()
         if getGame != None:
-            insertGame = User_Games(username=session["username"], game=formGameName)
+            insertGame = User_Games(username=session["username"], game_name=formGameName)
             db.session.add(insertGame)
             db.session.commit()
             return redirect('/home')
