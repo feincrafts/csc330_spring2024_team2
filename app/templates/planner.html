@@ -16,12 +16,27 @@
 </div>
 
 <!-- TODO implement add/remove game button -->
-<!-- TODO add img per game  if time -->
 
-<!-- TODO fix bug -->
+<div>
+   <form action="" method="post">
+   {{ taskform.hidden_tag() }}
+      <p>
+         {{ taskform.game.label }}
+         {{ taskform.game(size=32) }}
+      </p>
+      <p>
+         {{ taskform.description.label }}
+         {{ taskform.description(size=32) }}
+      </p>
+      <p>{{ taskform.submit() }}</p>   
+   </form>
+</div>
+
+
 {% for g, user_game in games %}
     <tr>
-        <td> <img src="{{g.image}}"> {{g.name}} </td>
+        <p style="border: 3px; border-style: solid; border-color: rgb(244, 247, 250); margin: 0 -1em;"></p>
+        <h3> <img src="{{g.image}}"> {{g.name}} </h3>
         <br>
         <ul>
             {% for t in tasks if t.game_name == g.name %}
@@ -31,10 +46,18 @@
             {% for ct in ctasks if ct.game_name == g.name %}
                 <li><input type="checkbox"> {{ct.goal}}</li>
                 <br>
-                <!-- TODO add task button and functionality -->
+                <!-- TODO "add task" button and functionality -->
+                
             {% endfor %}
         </ul>
     </tr>
+
 {% endfor %}
+
+<style>
+      li {
+         margin-left: 150px;
+      }
+</style>
 
 {% endblock %}
