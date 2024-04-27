@@ -31,6 +31,7 @@ class Game(db.Model):
     id = db.Column(db.Integer)
     name = db.Column(db.String(64), index=True, nullable=False, primary_key=True)
     tasks = db.relationship('Task', backref='game', lazy=True)
+    image = db.Column(db.String(128), nullable=True)
 
     def get_game_name(self):
         game = Game.query.get(self.game_id)
