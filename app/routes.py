@@ -34,6 +34,7 @@ def default():
 #@login_required
 def homepage():
     form = AddGameForm()
+    taskform = CreateTaskForm()
     #print(session["username"])
     if form.validate_on_submit():
         formGameName = form.game_name.data
@@ -43,11 +44,19 @@ def homepage():
             db.session.add(insertGame)
             db.session.commit()
             return redirect('/home')
+    if taskform.validate_on_submit():
+        print(taskform.description.data)
+        print(taskform.game.data)
+        print(db.session.query(User.id).filter_by(username=session["username"]))
+        insertTask = CustomTask(goal=taskform.description.data, creator_id=db.session.query(User.id).filter_by(username=session["username"]), game_name=taskform.game.data)
+        db.session.add(insertTask)
+        db.session.commit()
+        return redirect('/home')
     games = db.session.query(Game, User_Games).filter(User_Games.username == session["username"], User_Games.game_name == Game.name).all()
     #gameresults = db.session.query(User_Games.username, User_Games.game_name).filter_by(username=session["username"])
     taskresults = db.session.query(Task.goal, Task.complete, Task.game_name).join(Game, Task.game_name == Game.name)
     customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, CustomTask.game_name).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
-    return render_template('planner.html', form=form, games=games, tasks = taskresults, ctasks = customtaskresults )
+    return render_template('planner.html', form=form, taskform=taskform, games=games, tasks = taskresults, ctasks = customtaskresults )
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')

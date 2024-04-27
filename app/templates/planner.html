@@ -17,6 +17,22 @@
 
 <!-- TODO implement add/remove game button -->
 
+<div>
+   <form action="" method="post">
+   {{ taskform.hidden_tag() }}
+      <p>
+         {{ taskform.game.label }}
+         {{ taskform.game(size=32) }}
+      </p>
+      <p>
+         {{ taskform.description.label }}
+         {{ taskform.description(size=32) }}
+      </p>
+      <p>{{ taskform.submit() }}</p>   
+   </form>
+</div>
+
+
 {% for g, user_game in games %}
     <tr>
         <p style="border: 3px; border-style: solid; border-color: rgb(244, 247, 250); margin: 0 -1em;"></p>
@@ -34,14 +50,14 @@
                 
             {% endfor %}
         </ul>
-        
-    </tr">
+    </tr>
 
-    <style>
+{% endfor %}
+
+<style>
       li {
          margin-left: 150px;
       }
-    </style>
-{% endfor %}
+</style>
 
 {% endblock %}
