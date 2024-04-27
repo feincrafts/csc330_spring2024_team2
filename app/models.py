@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(64), index=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     admin = db.Column(db.Boolean, index=True, default=False)
-    games = db.relationship('Game', secondary='user_game', backref='users')
+    games = db.relationship('Game', secondary='user_games', backref='users')
     #using werkzeug.security here to hash passwords
     def set_password(self, password):
         self.password = generate_password_hash(password) 
@@ -28,26 +28,50 @@ class User(db.Model, UserMixin):
 
 class Game(db.Model):
     __tablename__ = 'game'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, nullable=False)
+    id = db.Column(db.Integer)
+    name = db.Column(db.String(64), index=True, nullable=False, primary_key=True)
     tasks = db.relationship('Task', backref='game', lazy=True)
+    image = db.Column(db.String(128), nullable=True)
+
+    def get_game_name(self):
+        game = Game.query.get(self.game_id)
+        if game:
+            return game.name  
+        else: 
+            None
     
     def __repr__(self):
         return '{}'.format(self.name)
 
 #Many to many relationship table so we can connect games to Users
-user_game = db.Table('user_game', db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('game_id', db.Integer, db.ForeignKey('game.id'), primary_key=True))
+"""
+user_game = db.Table('user_game', db.Column('username', db.Integer, db.ForeignKey('user.username'), primary_key=True),
+    db.Column('game', db.Integer, db.ForeignKey('game.name'), primary_key=True))
+"""
+
+class User_Games(db.Model):
+    __tablename__ = "user_games"
+
+    username = db.Column(db.String(32), db.ForeignKey('user.username'), primary_key=True)
+    game_name = db.Column(db.Integer, db.ForeignKey('game.name'), primary_key=True)
+
+    def __repr__(self):
+        return '{} {}'.format(self.username, self.game)
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
-    assigneduser = db.Column(db.String(32), db.ForeignKey('user.username'), nullable=False)
-    #users = db.relationship('User', secondary='user_task', backref='tasks')
-    #users = db.relationship('User', backref='tasks')
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    game_name = db.Column(db.Integer, db.ForeignKey('game.name'), nullable=False)
+    
+    def get_game_name(self):
+        game = Game.query.get(self.game_id)
+        if game:
+            return game.name  
+        else: 
+            None
     
     def mark_as_complete(self):
         self.complete = True
@@ -63,7 +87,7 @@ class CustomTask(db.Model):
     goal = db.Column(db.String(200), nullable=False)
     complete = db.Column(db.Boolean, default=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    game_name = db.Column(db.Integer, db.ForeignKey('game.name'), nullable=False)
     task_creator = db.relationship('User', backref='user_tasks')
     game = db.relationship('Game', backref='custom_tasks')
     
@@ -73,7 +97,7 @@ class CustomTask(db.Model):
         #Tries to find the game in the DB before it makes the goal
         game = Game.query.filter_by(name=game_name).first()
         if game:
-            new_task = CustomTask(goal=goal, creator_id=creator_id, game_id=game.id)
+            new_task = CustomTask(goal=goal, creator_id=creator_id, game_name=game.name)
             db.session.add(new_task)
             db.session.commit()
             return new_task
@@ -91,15 +115,13 @@ class CustomTask(db.Model):
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    game = db.Column(db.String(64), db.ForeignKey('game.id'), nullable=False)
+    game = db.Column(db.String(64), db.ForeignKey('game.id'))
     title =  db.Column(db.String(64))
-    #may have to fix date
     date = db.Column(db.String(32))
     description = db.Column(db.String(256))
     participants = db.Column(db.Integer)
     #user = db.Column(db.String(32), db.ForeignKey('user.username'))
 
-    #todo add_event ? 
     #add_event can be called to store the event in the DB, maybe we let the user know what format we need
     def add_event(self, title, date, description, participants):
         create_event = Event(title=title, date=date, description=description, participants=participants)
