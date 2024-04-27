@@ -21,7 +21,7 @@
 <!-- TODO fix bug -->
 {% for g, user_game in games %}
     <tr>
-        <td> <img src="{{g.image}}"> {{g.name}} </td>
+        <h3> <img src="{{g.image}}"> {{g.name}} </h3>
         <br>
         <ul>
             {% for t in tasks if t.game_name == g.name %}
@@ -35,6 +35,12 @@
             {% endfor %}
         </ul>
     </tr>
+
+    <style>
+      li {
+         margin-left: 150px;
+      }
+    </style>
 {% endfor %}
 
 {% endblock %}
