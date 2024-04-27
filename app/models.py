@@ -31,6 +31,13 @@ class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, nullable=False)
     tasks = db.relationship('Task', backref='game', lazy=True)
+
+    def get_game_name(self):
+        game = Game.query.get(self.game_id)
+        if game:
+            return game.name  
+        else: 
+            None
     
     def __repr__(self):
         return '{}'.format(self.name)
@@ -45,7 +52,7 @@ class User_Games(db.Model):
     __tablename__ = "user_games"
 
     username = db.Column(db.String(32), db.ForeignKey('user.username'), primary_key=True)
-    game = db.Column(db.String(64), db.ForeignKey('game.name'), primary_key=True)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), primary_key=True)
 
     def __repr__(self):
         return '{} {}'.format(self.username, self.game)

@@ -21,18 +21,21 @@
 <!-- TODO fix bug -->
 {% for g in games %}
         <tr>
-            <td> {{g.game}} </td>
+            <td> {{g.game_id}} </td>
             <br/>
             <ul>
             {% for t in tasks %}
-               <li><input type="checkbox"> {{t.goal}}</li>
-               <br/>
+               {% if g.game_id == t.game_id %}
+                  <li><input type="checkbox"> {{t.goal}}</li>
+                  <br/>
+               {% endif %}
             {% endfor %}
             {% for ct in ctasks %}
-               <li><input type="checkbox"> {{ct.goal}}</li>
-               <br/>
-               <!-- TODO add task button and functionality -->
-
+               {% if g.game_id == ct.game_id %}
+                  <li><input type="checkbox"> {{ct.goal}}</li>
+                  <br/>
+                  <!-- TODO add task button and functionality -->
+               {% endif %}
             {% endfor %}
             </ul>
         </tr>
