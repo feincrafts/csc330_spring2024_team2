@@ -16,9 +16,7 @@
 </div>
 
 <!-- TODO implement add/remove game button -->
-<!-- TODO add img per game  if time -->
 
-<!-- TODO fix bug -->
 {% for g, user_game in games %}
     <tr>
         <h3> <img src="{{g.image}}"> {{g.name}} </h3>
@@ -31,7 +29,8 @@
             {% for ct in ctasks if ct.game_name == g.name %}
                 <li><input type="checkbox"> {{ct.goal}}</li>
                 <br>
-                <!-- TODO add task button and functionality -->
+                <!-- TODO "add task" button and functionality -->
+                
             {% endfor %}
         </ul>
     </tr>

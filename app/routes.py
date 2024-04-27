@@ -45,7 +45,6 @@ def homepage():
             return redirect('/home')
     games = db.session.query(Game, User_Games).filter(User_Games.username == session["username"], User_Games.game_name == Game.name).all()
     #gameresults = db.session.query(User_Games.username, User_Games.game_name).filter_by(username=session["username"])
-    # todo stop a task from going under all games 
     taskresults = db.session.query(Task.goal, Task.complete, Task.game_name).join(Game, Task.game_name == Game.name)
     customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, CustomTask.game_name).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
     return render_template('planner.html', form=form, games=games, tasks = taskresults, ctasks = customtaskresults )
@@ -152,7 +151,7 @@ def calendar():
 def settings():
      return render_template('settings.html')
 
-     return render_template('create_event.html', form=form)
+     #return render_template('create_event.html', form=form)
 
 @app.route('/create_task', methods=['GET', 'POST'])
 def create_task():
