@@ -1,1 +1,10 @@
-<p> TODO settings</p>
+{% extends "inapp_base.html" %}
+
+{% block content %}
+    <p> Settings </p>
+
+    {% if results.admin == 1 %}
+        <p> Current User is Admin </p>
+    {% endif %}
+
+{% endblock %}

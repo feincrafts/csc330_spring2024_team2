@@ -65,7 +65,7 @@ def loggedin():
 
 @app.route('/loggedin_ad')
 def loggedin_ad():
-     return 'Temporary login as an admin'
+     return redirect('/settings')
 
 @app.route('/register', methods=['GET', 'POST'])
 def registration(): 
@@ -101,7 +101,9 @@ def signin():
             print("User not found")
             return redirect('/register')
         elif user.admin:
-            return redirect('/loggedin_ad')
+            login_user(user)
+            session['username'] = request.form['username']
+            return redirect('/settings')
         elif not check_password_hash(user.password, password_in):
              print("PW is wrong")
              return redirect('/login')
@@ -158,7 +160,8 @@ def calendar():
 
 @app.route('/settings')
 def settings():
-     return render_template('settings.html')
+     results = db.session.query(User.admin).filter_by(username=session["username"]).first()
+     return render_template('settings.html', results=results)
 
      #return render_template('create_event.html', form=form)
 
