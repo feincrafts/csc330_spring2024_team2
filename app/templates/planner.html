@@ -19,26 +19,22 @@
 <!-- TODO add img per game  if time -->
 
 <!-- TODO fix bug -->
-{% for g in games %}
-        <tr>
-            <td> <img src="../static/images/image.png"> {{g.game_name}} </td>
-            <br/>
-            <ul>
-            {% for t in tasks %}
-               {% if g.game_name == t.game_name %}
-                  <li><input type="checkbox"> {{t.goal}}</li>
-                  <br/>
-               {% endif %}
+{% for g, user_game in games %}
+    <tr>
+        <td> <img src="{{g.image}}"> {{g.name}} </td>
+        <br>
+        <ul>
+            {% for t in tasks if t.game_name == g.name %}
+                <li><input type="checkbox"> {{t.goal}}</li>
+                <br>
             {% endfor %}
-            {% for ct in ctasks %}
-               {% if g.game_name == ct.game_name %}
-                  <li><input type="checkbox"> {{ct.goal}}</li>
-                  <br/>
-                  <!-- TODO add task button and functionality -->
-               {% endif %}
+            {% for ct in ctasks if ct.game_name == g.name %}
+                <li><input type="checkbox"> {{ct.goal}}</li>
+                <br>
+                <!-- TODO add task button and functionality -->
             {% endfor %}
-            </ul>
-        </tr>
+        </ul>
+    </tr>
 {% endfor %}
 
 {% endblock %}
