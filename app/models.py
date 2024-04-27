@@ -59,7 +59,7 @@ class Task(db.Model):
     assigneduser = db.Column(db.String(32), db.ForeignKey('user.username'), nullable=False)
     #users = db.relationship('User', secondary='user_task', backref='tasks')
     #users = db.relationship('User', backref='tasks')
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
     #game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
     
     def mark_as_complete(self):
@@ -76,8 +76,8 @@ class CustomTask(db.Model):
     goal = db.Column(db.String(200), nullable=False)
     complete = db.Column(db.Boolean, default=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     task_creator = db.relationship('User', backref='user_tasks')
+    game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
     #game = db.relationship('Game', backref='custom_tasks')
     #game_name = db.Column(db.String(64), db.ForeignKey('game.name'))
     
@@ -87,7 +87,7 @@ class CustomTask(db.Model):
         #Tries to find the game in the DB before it makes the goal
         game = Game.query.filter_by(name=game_name).first()
         if game:
-            new_task = CustomTask(goal=goal, creator_id=creator_id, game_id=game.id)
+            new_task = CustomTask(goal=goal, creator_id=creator_id, game_name=game.name)
             db.session.add(new_task)
             db.session.commit()
             return new_task
