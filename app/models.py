@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
 class Game(db.Model):
     __tablename__ = 'game'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, nullable=False, primary_key = True)
+    name = db.Column(db.String(64), index=True, nullable=False)
     tasks = db.relationship('Task', backref='game', lazy=True)
     
     def __repr__(self):
@@ -57,10 +57,14 @@ class Task(db.Model):
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
     assigneduser = db.Column(db.String(32), db.ForeignKey('user.username'), nullable=False)
-    #users = db.relationship('User', secondary='user_task', backref='tasks')
-    #users = db.relationship('User', backref='tasks')
-    game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
-    #game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    
+    def get_game_name(self):
+        game = Game.query.get(self.game_id)
+        if game:
+            return game.name  
+        else: 
+            None
     
     def mark_as_complete(self):
         self.complete = True
@@ -76,10 +80,9 @@ class CustomTask(db.Model):
     goal = db.Column(db.String(200), nullable=False)
     complete = db.Column(db.Boolean, default=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     task_creator = db.relationship('User', backref='user_tasks')
-    game_name = db.Column(db.String(64), db.ForeignKey('game.name'), nullable=False)
-    #game = db.relationship('Game', backref='custom_tasks')
-    #game_name = db.Column(db.String(64), db.ForeignKey('game.name'))
+    game = db.relationship('Game', backref='custom_tasks')
     
     #Creates custom tasks, make sure to use current_user.id to insert into creator_id
     @staticmethod
@@ -87,7 +90,7 @@ class CustomTask(db.Model):
         #Tries to find the game in the DB before it makes the goal
         game = Game.query.filter_by(name=game_name).first()
         if game:
-            new_task = CustomTask(goal=goal, creator_id=creator_id, game_name=game.name)
+            new_task = CustomTask(goal=goal, creator_id=creator_id, game_id=game.id)
             db.session.add(new_task)
             db.session.commit()
             return new_task
