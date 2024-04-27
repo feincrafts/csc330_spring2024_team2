@@ -64,7 +64,6 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
-    assigneduser = db.Column(db.String(32), db.ForeignKey('user.username'), nullable=False)
     game_name = db.Column(db.Integer, db.ForeignKey('game.name'), nullable=False)
     
     def get_game_name(self):
