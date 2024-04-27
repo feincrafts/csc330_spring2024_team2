@@ -43,10 +43,10 @@ def homepage():
             db.session.add(insertGame)
             db.session.commit()
             return redirect('/home')
-    gameresults = db.session.query(User_Games.username, User_Games.game_id).filter_by(username=session["username"])
+    gameresults = db.session.query(User_Games.username, User_Games.game_name).filter_by(username=session["username"])
     # todo stop a task from going under all games 
-    taskresults = db.session.query(Task.goal, Task.complete, Task.game_id)
-    customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, CustomTask.game_id).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
+    taskresults = db.session.query(Task.goal, Task.complete, Task.game_name)
+    customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, CustomTask.game_name).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
     return render_template('planner.html', form=form, games=gameresults, tasks = taskresults, ctasks = customtaskresults )
 
 #temporary logged in page to test if/when users have successfully logged in

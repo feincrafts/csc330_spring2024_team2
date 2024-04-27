@@ -28,8 +28,8 @@ class User(db.Model, UserMixin):
 
 class Game(db.Model):
     __tablename__ = 'game'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, nullable=False)
+    id = db.Column(db.Integer)
+    name = db.Column(db.String(64), index=True, nullable=False, primary_key=True)
     tasks = db.relationship('Task', backref='game', lazy=True)
 
     def get_game_name(self):
@@ -52,7 +52,7 @@ class User_Games(db.Model):
     __tablename__ = "user_games"
 
     username = db.Column(db.String(32), db.ForeignKey('user.username'), primary_key=True)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), primary_key=True)
+    game_name = db.Column(db.Integer, db.ForeignKey('game.name'), primary_key=True)
 
     def __repr__(self):
         return '{} {}'.format(self.username, self.game)
@@ -64,7 +64,7 @@ class Task(db.Model):
     goal = db.Column(db.String(200),index=True, nullable=False)
     complete = db.Column(db.Boolean, index=True, default=False)
     assigneduser = db.Column(db.String(32), db.ForeignKey('user.username'), nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    game_name = db.Column(db.Integer, db.ForeignKey('game.name'), nullable=False)
     
     def get_game_name(self):
         game = Game.query.get(self.game_id)
@@ -87,7 +87,7 @@ class CustomTask(db.Model):
     goal = db.Column(db.String(200), nullable=False)
     complete = db.Column(db.Boolean, default=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    game_name = db.Column(db.Integer, db.ForeignKey('game.name'), nullable=False)
     task_creator = db.relationship('User', backref='user_tasks')
     game = db.relationship('Game', backref='custom_tasks')
     
@@ -97,7 +97,7 @@ class CustomTask(db.Model):
         #Tries to find the game in the DB before it makes the goal
         game = Game.query.filter_by(name=game_name).first()
         if game:
-            new_task = CustomTask(goal=goal, creator_id=creator_id, game_id=game.id)
+            new_task = CustomTask(goal=goal, creator_id=creator_id, game_name=game.name)
             db.session.add(new_task)
             db.session.commit()
             return new_task
