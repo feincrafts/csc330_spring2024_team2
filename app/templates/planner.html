@@ -19,6 +19,7 @@
 
 {% for g, user_game in games %}
     <tr>
+        <p style="border: 3px; border-style: solid; border-color: rgb(244, 247, 250); margin: 0 -1em;"></p>
         <h3> <img src="{{g.image}}"> {{g.name}} </h3>
         <br>
         <ul>
@@ -33,7 +34,8 @@
                 
             {% endfor %}
         </ul>
-    </tr>
+        
+    </tr">
 
     <style>
       li {
