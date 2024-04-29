@@ -158,8 +158,9 @@ def calendar():
 
 @app.route('/settings')
 def settings():
-     return render_template('settings.html')
-
+     results = db.session.query(User.admin).filter_by(username=session["username"]).first()
+     games = db.session.query(Game)
+     return render_template('settings.html', results=results, games=games)
      #return render_template('create_event.html', form=form)
 
 @app.route('/create_task', methods=['GET', 'POST'])
