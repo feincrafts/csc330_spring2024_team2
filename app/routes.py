@@ -103,7 +103,7 @@ def signin():
         elif user.admin:
             login_user(user)
             session['username'] = request.form['username']
-            return redirect('/settings')
+            return redirect('/admin')
         elif not check_password_hash(user.password, password_in):
              print("PW is wrong")
              return redirect('/login')
@@ -169,3 +169,7 @@ def settings():
 def create_task():
      form = CreateTaskForm()
      return render_template('create_task.html', form=form)
+
+@app.route('/admin')
+def admin():
+     return render_template('admin.html')
