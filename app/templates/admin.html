@@ -22,8 +22,20 @@
   <h3>Admin View</h3>
 
   
-  <h5>Use this account to add games, tasks, and more!</h5>
+  <h5>Use this account to add new games into the website's database</h5>
   <h5>Go to "Settings" for more information</h5>
+
+  <div>
+     <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+           {{ form.new_game_name.label }}<br>
+           {{ form.new_game_name(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+     </form>
+  </div>
+  
 </body>
 </html>
 

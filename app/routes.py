@@ -36,14 +36,21 @@ def homepage():
     form = AddGameForm()
     taskform = CreateTaskForm()
     #print(session["username"])
+    username_in = session['username']
+    user = User.query.filter_by(username=username_in).first()
+
     if form.validate_on_submit():
         formGameName = form.game_name.data
-        getGame = db.session.query(Game).filter_by(name=formGameName).first()
-        if getGame != None:
-            insertGame = User_Games(username=session["username"], game_name=formGameName)
+        existing_game = User_Games.query.filter_by(username=session["username"], game_name=formGameName).first()
+        print(existing_game)
+        if existing_game:
+            print('game already exists')
+        else:
+            insertGame = User_Games(username=session["username"], game_name = formGameName)
             db.session.add(insertGame)
             db.session.commit()
             return redirect('/home')
+
     if taskform.validate_on_submit():
         print(taskform.description.data)
         print(taskform.game.data)
@@ -170,6 +177,20 @@ def create_task():
      form = CreateTaskForm()
      return render_template('create_task.html', form=form)
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 def admin():
-     return render_template('admin.html')
+    form = AddNewGameForm()
+    username_in = session['username']
+    user = User.query.filter_by(username=username_in).first()
+    if form.validate_on_submit():
+        formGameName = form.new_game_name.data
+        existing_game = Game.query.filter_by(name=formGameName).first()
+        print(existing_game)
+        if existing_game:
+            print('game already exists')
+        else:
+            insertNewGame = Game(name = formGameName)
+            print(insertNewGame)
+            db.session.add(insertNewGame)
+            db.session.commit()
+    return render_template('admin.html', form=form)
