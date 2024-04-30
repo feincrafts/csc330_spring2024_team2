@@ -56,7 +56,7 @@ class User_Games(db.Model):
     game_name = db.Column(db.Integer, db.ForeignKey('game.name'), primary_key=True)
 
     def __repr__(self):
-        return '{} {}'.format(self.username, self.game)
+        return '{} {}'.format(self.username, self.game_name)
 
 
 class Task(db.Model):

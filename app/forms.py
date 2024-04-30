@@ -40,5 +40,9 @@ class CreateTaskForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class AddGameForm(FlaskForm):
-    game_name = StringField('Add Game', validators=[DataRequired()])
+    game_name = StringField('Show Game tasks', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class AddNewGameForm(FlaskForm):
+    new_game_name = StringField('Add New Game to Database', validators=[DataRequired()])
     submit = SubmitField('Submit')

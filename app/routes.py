@@ -36,14 +36,21 @@ def homepage():
     form = AddGameForm()
     taskform = CreateTaskForm()
     #print(session["username"])
+    username_in = session['username']
+    user = User.query.filter_by(username=username_in).first()
+
     if form.validate_on_submit():
         formGameName = form.game_name.data
-        getGame = db.session.query(Game).filter_by(name=formGameName).first()
-        if getGame != None:
-            insertGame = User_Games(username=session["username"], game_name=formGameName)
+        existing_game = User_Games.query.filter_by(username=session["username"], game_name=formGameName).first()
+        print(existing_game)
+        if existing_game:
+            print('game already exists')
+        else:
+            insertGame = User_Games(username=session["username"], game_name = formGameName)
             db.session.add(insertGame)
             db.session.commit()
             return redirect('/home')
+
     if taskform.validate_on_submit():
         print(taskform.description.data)
         print(taskform.game.data)
@@ -65,7 +72,7 @@ def loggedin():
 
 @app.route('/loggedin_ad')
 def loggedin_ad():
-     return 'Temporary login as an admin'
+     return redirect('/settings')
 
 @app.route('/register', methods=['GET', 'POST'])
 def registration(): 
@@ -101,7 +108,9 @@ def signin():
             print("User not found")
             return redirect('/register')
         elif user.admin:
-            return redirect('/loggedin_ad')
+            login_user(user)
+            session['username'] = request.form['username']
+            return redirect('/admin')
         elif not check_password_hash(user.password, password_in):
              print("PW is wrong")
              return redirect('/login')
@@ -159,11 +168,34 @@ def calendar():
 @app.route('/settings')
 def settings():
      results = db.session.query(User.admin).filter_by(username=session["username"]).first()
+<<<<<<< HEAD
      games = db.session.query(Game)
      return render_template('settings.html', results=results, games=games)
+=======
+     return render_template('settings.html', results=results)
+
+>>>>>>> 08c1771662a0a87479515f7177ef142aae8bf4c1
      #return render_template('create_event.html', form=form)
 
 @app.route('/create_task', methods=['GET', 'POST'])
 def create_task():
      form = CreateTaskForm()
      return render_template('create_task.html', form=form)
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    form = AddNewGameForm()
+    username_in = session['username']
+    user = User.query.filter_by(username=username_in).first()
+    if form.validate_on_submit():
+        formGameName = form.new_game_name.data
+        existing_game = Game.query.filter_by(name=formGameName).first()
+        print(existing_game)
+        if existing_game:
+            print('game already exists')
+        else:
+            insertNewGame = Game(name = formGameName)
+            print(insertNewGame)
+            db.session.add(insertNewGame)
+            db.session.commit()
+    return render_template('admin.html', form=form)
