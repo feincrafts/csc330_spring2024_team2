@@ -18,26 +18,3 @@ db = SQLAlchemy(app)
 
 
 from app import routes, models
-
-def init_db():
-    from .models import User
-    
-    admin_accounts = [
-        {'username': 'hec', 'email': 'hec@example.com', 'password': 'lazu'},
-        {'username': 'work', 'email': 'work@example.com', 'password': 'please'},
-        {'username': 'merin', 'email': 'merin@gmail.com', 'password': 'working'},
-        {'username': 'kaye', 'email': 'kaye@gmail.com', 'password': 'still' }
-        ]
-                
-    for info in admin_accounts:
-        existing_admin = User.query.filter_by(username=info['username']).first()
-        if existing_admin is None:
-            new_admin = User(username=info['username'], password=info['password'], email=info['email'])
-            new_admin.admin = True
-            db.session.add(new_admin)
-                    
-    db.session.commit()
-
-    
-
-

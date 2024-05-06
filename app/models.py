@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime  #use this to add time implementation
+from datetime import datetime
 from flask_login import UserMixin, current_user
 from app import db
 
@@ -43,21 +43,14 @@ class Game(db.Model):
     def __repr__(self):
         return '{}'.format(self.name)
 
-#Many to many relationship table so we can connect games to Users
-"""
-user_game = db.Table('user_game', db.Column('username', db.Integer, db.ForeignKey('user.username'), primary_key=True),
-    db.Column('game', db.Integer, db.ForeignKey('game.name'), primary_key=True))
-"""
-
+#relationship table
 class User_Games(db.Model):
     __tablename__ = "user_games"
-
     username = db.Column(db.String(32), db.ForeignKey('user.username'), primary_key=True)
     game_name = db.Column(db.Integer, db.ForeignKey('game.name'), primary_key=True)
 
     def __repr__(self):
         return '{} {}'.format(self.username, self.game_name)
-
 
 class Task(db.Model):
     __tablename__ = 'tasks'

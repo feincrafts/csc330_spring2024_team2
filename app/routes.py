@@ -13,29 +13,18 @@ from flask_login import LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 @login_manager.user_loader
 def load_user(username):
     return get_user(username)
     
-
-"""
-#this function stores the user_id in the session after every route, allowing us to identify each user
-def load_user(user_id):
-    return User.query.get(int(user_id))
-"""
-
 @app.route('/')
 def default():
     return redirect('/login')
 
-#temporary home page
 @app.route('/home', methods=['GET', 'POST'])
-#@login_required
 def homepage():
     form = AddGameForm()
     taskform = CreateTaskForm()
-    #print(session["username"])
     username_in = session['username']
     user = User.query.filter_by(username=username_in).first()
 
@@ -59,8 +48,8 @@ def homepage():
         db.session.add(insertTask)
         db.session.commit()
         return redirect('/home')
+    #only shows the games and custom tasks a user is signed up for
     games = db.session.query(Game, User_Games).filter(User_Games.username == session["username"], User_Games.game_name == Game.name).all()
-    #gameresults = db.session.query(User_Games.username, User_Games.game_name).filter_by(username=session["username"])
     taskresults = db.session.query(Task.goal, Task.complete, Task.game_name).join(Game, Task.game_name == Game.name)
     customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, CustomTask.game_name).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
     return render_template('planner.html', form=form, taskform=taskform, games=games, tasks = taskresults, ctasks = customtaskresults )
@@ -159,10 +148,7 @@ def create_event():
 
 @app.route('/calendar', methods=['GET','POST'])
 def calendar():
-     # to get more info, elaborate on this and adjust models.py repr
-     # also, currently calendar.html filters based on user, not this query
      results = db.session.query(Event.title, Event.date, Event.description)
-     #results = Event.query.filter_by(user=task.user) #ignore this it doesn't work
      return render_template('calendar.html', events=results)
 
 @app.route('/settings')
@@ -170,7 +156,6 @@ def settings():
      results = db.session.query(User.admin).filter_by(username=session["username"]).first()
      games = db.session.query(Game)
      return render_template('settings.html', results=results, games=games)
-     #return render_template('create_event.html', form=form)
 
 @app.route('/create_task', methods=['GET', 'POST'])
 def create_task():
