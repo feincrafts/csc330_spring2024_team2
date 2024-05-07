@@ -4,12 +4,60 @@
 
 <h3 style="text-align: center;"> Today's Planner </h3>
 
-   <!-- TODO add box to search game from db , on select it adds game?  --> 
-
-{% endblock %}
+<div>
+   <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p>
+         {{ form.game_name.label }}<br>
+         {{ form.game_name(size=32) }}
+      </p>
+      <p>{{ form.submit() }}</p>
+   </form>
+</div>
 
 <!-- TODO implement add/remove game button -->
 
-<!-- TODO implement grabs every users games and every users' subscribed tasks -->
-<!-- every task should have a checkmark -->
-<!-- every game should have an enter custom goals to add to this-->
+<div>
+   <form action="" method="post">
+   {{ taskform.hidden_tag() }}
+      <p>
+         {{ taskform.game.label }}
+         {{ taskform.game(size=32) }}
+      </p>
+      <p>
+         {{ taskform.description.label }}
+         {{ taskform.description(size=32) }}
+      </p>
+      <p>{{ taskform.submit() }}</p>   
+   </form>
+</div>
+
+
+{% for g, user_game in games %}
+    <tr>
+        <p style="border: 3px; border-style: solid; border-color: rgb(244, 247, 250); margin: 0 -1em;"></p>
+        <h3> <img src="{{g.image}}"> {{g.name}} </h3>
+        <br>
+        <ul>
+            {% for t in tasks if t.game_name == g.name %}
+                <li><input type="checkbox"> {{t.goal}}</li>
+                <br>
+            {% endfor %}
+            {% for ct in ctasks if ct.game_name == g.name %}
+                <li><input type="checkbox"> {{ct.goal}}</li>
+                <br>
+                <!-- TODO "add task" button and functionality -->
+                
+            {% endfor %}
+        </ul>
+    </tr>
+
+{% endfor %}
+
+<style>
+      li {
+         margin-left: 150px;
+      }
+</style>
+
+{% endblock %}

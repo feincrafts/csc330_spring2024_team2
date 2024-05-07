@@ -1,1 +1,21 @@
-<p> TODO settings</p>
+{% extends "inapp_base.html" %}
+
+{% block content %}
+    <p> Settings </p>
+    {% if results.admin == 1 %}
+    <p> Current User is Admin </p>
+    {% endif %}
+
+    {% for g in games %}
+    <tr>
+        <p style="border: 3px; border-style: solid; border-color: rgb(244, 247, 250); margin: 0 -1em;"></p>
+        <h3> <img src="{{g.image}}"> {{g.name}} </h3>
+        <br>
+        <ul>
+
+        </ul>
+    </tr>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Logged-in pages only (has header bar) -->
+<!-- similar to HTML but different enough bc header -->
+
+<!-- Can change background to an image later-->
+<html style="background-image: url('static/images/testimage2.png'); background-size: 50%;">
+    <head>
+        <title>GameTrack</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+
+    <body style="margin-top: 5%;">
+        <div style="text-align: center; padding-top: 10px;">
+            <a href="/admin" class="headerbutton"> Home </a>
+            <a href="/home" class="headerbutton"> Planner </a>
+            <a href="/settings" class="headerbutton"> Settings </a>
+            <a href="/logout" class="headerbutton"> LOGOUT </a>
+            <br>
+        </div>
+        <div id="mainpanel" class="panel">
+            {% block content %}{% endblock %}
+
+        </div>
+
+    </body>
+
+    <style>
+
+        .headerbutton {
+                background-color: rgb(244, 247, 250);
+                padding: 10px;
+                border-radius: 5px;
+                margin: 1px;
+        }
+
+    </style>
+
+</html>

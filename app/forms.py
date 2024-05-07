@@ -33,8 +33,16 @@ class CreateEventForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class CreateTaskForm(FlaskForm):
-    title = StringField('Task Title', validators=[DataRequired()])
+    #title = StringField('Task Title', validators=[DataRequired()])
     game = StringField('Game',validators=[DataRequired ()])
-    date = DateField('Date', validators = [DataRequired()])
-    description =  TextAreaField('Task Description', validators = [DataRequired()])
+    #date = DateField('Date', validators = [DataRequired()])
+    description =  TextAreaField('Add Task', validators = [DataRequired()])
+    submit = SubmitField('Submit')
+
+class AddGameForm(FlaskForm):
+    game_name = StringField('Show Game tasks', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class AddNewGameForm(FlaskForm):
+    new_game_name = StringField('Add New Game to Database', validators=[DataRequired()])
     submit = SubmitField('Submit')

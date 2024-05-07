@@ -1,9 +1,9 @@
 
-from flask import Flask, render_template, redirect, url_for, flash, session
-from app.forms import LoginForm, RegisterForm, ResetPasswordForm, ForgotPasswordForm, CreateEventForm, CreateTaskForm
+from flask import Flask, render_template, redirect, url_for, flash, session, request
+from app.forms import *
 from app.models import *
 from app import db
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import *
 from flask_login import FlaskLoginClient, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys
@@ -13,27 +13,46 @@ from flask_login import LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 @login_manager.user_loader
 def load_user(username):
     return get_user(username)
     
-
-"""
-#this function stores the user_id in the session after every route, allowing us to identify each user
-def load_user(user_id):
-    return User.query.get(int(user_id))
-"""
-
 @app.route('/')
 def default():
     return redirect('/login')
 
-#temporary home page
 @app.route('/home', methods=['GET', 'POST'])
-#@login_required
 def homepage():
-	return render_template('planner.html')
+    form = AddGameForm()
+    taskform = CreateTaskForm()
+    username_in = session['username']
+    user = User.query.filter_by(username=username_in).first()
+
+    if form.validate_on_submit():
+        formGameName = form.game_name.data
+        existing_game = User_Games.query.filter_by(username=session["username"], game_name=formGameName).first()
+        print(existing_game)
+        if existing_game:
+            print('game already exists')
+        else:
+            insertGame = User_Games(username=session["username"], game_name = formGameName)
+            db.session.add(insertGame)
+            db.session.commit()
+            return redirect('/home')
+
+    if taskform.validate_on_submit():
+        print(taskform.description.data)
+        print(taskform.game.data)
+        print(db.session.query(User.id).filter_by(username=session["username"]))
+        insertTask = CustomTask(goal=taskform.description.data, creator_id=db.session.query(User.id).filter_by(username=session["username"]), game_name=taskform.game.data)
+        db.session.add(insertTask)
+        db.session.commit()
+        return redirect('/home')
+    #only shows the games and custom tasks a user is signed up for
+    games = db.session.query(Game, User_Games).filter(User_Games.username == session["username"], User_Games.game_name == Game.name).all()
+    taskresults = db.session.query(Task.goal, Task.complete, Task.game_name).join(Game, Task.game_name == Game.name)
+    customtaskresults = db.session.query(CustomTask.goal, CustomTask.complete, CustomTask.creator_id, CustomTask.game_name).filter_by(creator_id = db.session.query(User.id).filter_by(username=session["username"]))
+    return render_template('planner.html', form=form, taskform=taskform, games=games, tasks = taskresults, ctasks = customtaskresults )
 
 #temporary logged in page to test if/when users have successfully logged in
 @app.route('/loggedin')
@@ -42,7 +61,7 @@ def loggedin():
 
 @app.route('/loggedin_ad')
 def loggedin_ad():
-     return 'Temporary login as an admin'
+     return redirect('/settings')
 
 @app.route('/register', methods=['GET', 'POST'])
 def registration(): 
@@ -78,13 +97,16 @@ def signin():
             print("User not found")
             return redirect('/register')
         elif user.admin:
-            return redirect('/loggedin_ad')
+            login_user(user)
+            session['username'] = request.form['username']
+            return redirect('/admin')
         elif not check_password_hash(user.password, password_in):
              print("PW is wrong")
              return redirect('/login')
         else:
             print("Congrats you logged in")
             login_user(user)
+            session['username'] = request.form['username']
             return redirect('/home')
 
     return render_template('login.html', form=form)
@@ -94,6 +116,7 @@ def logout():
     try:
         logout_user()
         print("You're logged out!")
+        session.pop('username', None)
     except:
          print("oops logout broke")
     flash('You have been logged out.', 'info')
@@ -115,9 +138,6 @@ def create_event():
 
      print()
      if form.validate_on_submit():
-        # todo, implement unique id
-        # todo implement date
-        # todo get way of getting current user
         new_event = Event(title=form.title.data, game=str(form.game.data), date=form.date.data, description=form.description.data, participants=form.participants.data)
         #after inputting all the new information, it is added and committed into the db
         db.session.add(new_event)
@@ -128,20 +148,34 @@ def create_event():
 
 @app.route('/calendar', methods=['GET','POST'])
 def calendar():
-     # to get more info, elaborate on this and adjust models.py repr
-     # todo filter by current user 
-     # todo - how to store/get current user??? 
      results = db.session.query(Event.title, Event.date, Event.description)
-     #results = Event.query.filter_by(user=task.user) #ignore this it doesn't work
      return render_template('calendar.html', events=results)
 
 @app.route('/settings')
 def settings():
-     return render_template('settings.html')
-
-     return render_template('create_event.html', form=form)
+     results = db.session.query(User.admin).filter_by(username=session["username"]).first()
+     games = db.session.query(Game)
+     return render_template('settings.html', results=results, games=games)
 
 @app.route('/create_task', methods=['GET', 'POST'])
 def create_task():
      form = CreateTaskForm()
      return render_template('create_task.html', form=form)
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    form = AddNewGameForm()
+    username_in = session['username']
+    user = User.query.filter_by(username=username_in).first()
+    if form.validate_on_submit():
+        formGameName = form.new_game_name.data
+        existing_game = Game.query.filter_by(name=formGameName).first()
+        print(existing_game)
+        if existing_game:
+            print('game already exists')
+        else:
+            insertNewGame = Game(name = formGameName)
+            print(insertNewGame)
+            db.session.add(insertNewGame)
+            db.session.commit()
+    return render_template('admin.html', form=form)
